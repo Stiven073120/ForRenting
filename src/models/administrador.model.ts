@@ -1,4 +1,9 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Departamento} from './departamento.model';
+import {Municipio} from './municipio.model';
+import {Sede} from './sede.model';
+import {TipoVehiculo} from './tipo-vehiculo.model';
+import {Asesor} from './asesor.model';
 
 @model()
 export class Administrador extends Entity {
@@ -63,6 +68,20 @@ export class Administrador extends Entity {
   })
   telefono: string;
 
+  @hasMany(() => Departamento, {keyTo: 'id_administrador'})
+  departamentos: Departamento[];
+
+  @hasMany(() => Municipio, {keyTo: 'id_administrador'})
+  municipios: Municipio[];
+
+  @hasMany(() => Sede, {keyTo: 'id_administrador'})
+  sedes: Sede[];
+
+  @hasMany(() => TipoVehiculo, {keyTo: 'id_administrador'})
+  tipoVehiculos: TipoVehiculo[];
+
+  @hasMany(() => Asesor, {keyTo: 'id_administrador'})
+  asesors: Asesor[];
 
   constructor(data?: Partial<Administrador>) {
     super(data);

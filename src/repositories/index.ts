@@ -6,6 +6,6 @@ export * from './municipio.repository';
 export * from './sede.repository';
 export * from './solicitud.repository';
 export * from './tipo-vehiculo.repository';
-export * from './usuario.repository';
 export * from './vehiculo-rentado.repository';
 export * from './vehiculo.repository';
+

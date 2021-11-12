@@ -1,4 +1,9 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasOne, hasMany} from '@loopback/repository';
+import {Asesor} from './asesor.model';
+import {TipoVehiculo} from './tipo-vehiculo.model';
+import {VehiculoRentado} from './vehiculo-rentado.model';
+import {Solicitud} from './solicitud.model';
+import {Sede} from './sede.model';
 
 @model()
 export class Vehiculo extends Entity {
@@ -20,13 +25,6 @@ export class Vehiculo extends Entity {
     required: true,
   })
   descripcion: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  id_sede: string;
-
   @property({
     type: 'string',
     required: true,
@@ -57,6 +55,25 @@ export class Vehiculo extends Entity {
   })
   fotografia: string;
 
+  @belongsTo(() => Asesor, {name: 'asesor'})
+  id_asesor: string;
+
+  @belongsTo(() => TipoVehiculo, {name: 'tipovehiculo'})
+  tipo_vehiculo: string;
+
+  @property({
+    type: 'string',
+  })
+  id_cliente?: string;
+
+  @hasOne(() => VehiculoRentado, {keyTo: 'id_vehiculo'})
+  vehiculoRentado: VehiculoRentado;
+
+  @hasMany(() => Solicitud, {keyTo: 'id_vehiculo'})
+  solicituds: Solicitud[];
+
+  @belongsTo(() => Sede, {name: 'sede'})
+  id_sede: string;
 
   constructor(data?: Partial<Vehiculo>) {
     super(data);
