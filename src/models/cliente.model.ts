@@ -1,8 +1,8 @@
-import {Entity, model, property, belongsTo, hasMany, hasOne} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, hasOne, model, property} from '@loopback/repository';
 import {Asesor} from './asesor.model';
 import {Solicitud} from './solicitud.model';
-import {Vehiculo} from './vehiculo.model';
 import {VehiculoRentado} from './vehiculo-rentado.model';
+import {Vehiculo} from './vehiculo.model';
 
 @model()
 export class Cliente extends Entity {
@@ -30,6 +30,12 @@ export class Cliente extends Entity {
     required: true,
   })
   correo: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  clave: string;
 
   @property({
     type: 'string',

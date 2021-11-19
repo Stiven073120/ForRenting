@@ -1,30 +1,30 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
+import {Llaves} from '../config/llaves';
 import {Asesor} from '../models';
 import {AsesorRepository} from '../repositories';
+import {AutenticacionService} from '../services';
+const fetch = require('node-fetch');
 
 export class AsesorController {
   constructor(
     @repository(AsesorRepository)
-    public asesorRepository : AsesorRepository,
-  ) {}
+    public asesorRepository: AsesorRepository,
+    @service(AutenticacionService)
+    public servicioAutenticacion: AutenticacionService
+  ) { }
 
   @post('/asesors')
   @response(200, {
@@ -44,7 +44,23 @@ export class AsesorController {
     })
     asesor: Omit<Asesor, 'id'>,
   ): Promise<Asesor> {
-    return this.asesorRepository.create(asesor);
+
+    let clave = this.servicioAutenticacion.GenerarClave();
+    let claveCifrada = this.servicioAutenticacion.CifrarClave(clave);
+    asesor.clave = claveCifrada;
+    let a = await this.asesorRepository.create(asesor);
+
+    //Notificar al administrador
+
+    let destino = asesor.correo;
+    let asunto = 'Registro en la plataforma como Asesor'
+    let contenido = `Hola ${asesor.nombre}, su usuario como asesor es ${asesor.correo} y su contraseña es ${clave}`
+    fetch(`${Llaves.urlServicioNotificaciones}/send-email?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+
+      .then((data: any) => {
+        console.log(data);
+      })
+    return a;
   }
 
   @get('/asesors/count')
