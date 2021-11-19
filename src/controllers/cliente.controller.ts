@@ -9,11 +9,11 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Llaves} from '../config/llaves';
-import {Cliente} from '../models';
+import {Cliente, Credenciales} from '../models';
 import {ClienteRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 const fetch = require('node-fetch');
@@ -25,6 +25,34 @@ export class ClienteController {
     @service(AutenticacionService)
     public servicioAutenticacion: AutenticacionService
   ) { }
+
+  @post("/identificarCliente", {
+    responses: {
+      '200': {
+        description: "Identificacion de Cliente"
+      }
+    }
+  })
+  async identificarCliente(
+    @requestBody() credenciales: Credenciales
+  ) {
+    let c = await this.servicioAutenticacion.IdentificarCliente(credenciales.usuario, credenciales.clave);
+    if (c) {
+      let token = this.servicioAutenticacion.GenerearTokenJWT_c(c);
+      return {
+        datos: {
+          nombre: c.nombre,
+          correo: c.correo,
+          descripcion: c.descripcion,
+          id: c.id
+        },
+        tk: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos invalidos")
+    }
+  }
+
 
   @post('/clientes')
   @response(200, {

@@ -10,3 +10,4 @@ export * from './tipo-vehiculo.model';
 export * from './vehiculo-rentado.model';
 export * from './vehiculo.model';
 
+export * from './credenciales.model';

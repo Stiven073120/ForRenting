@@ -9,11 +9,11 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Llaves} from '../config/llaves';
-import {Asesor} from '../models';
+import {Asesor, Credenciales} from '../models';
 import {AsesorRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 const fetch = require('node-fetch');
@@ -25,6 +25,34 @@ export class AsesorController {
     @service(AutenticacionService)
     public servicioAutenticacion: AutenticacionService
   ) { }
+
+  @post("/identificarAsesor", {
+    responses: {
+      '200': {
+        description: "Identificacion de Asesor"
+      }
+    }
+  })
+  async identificarAsesor(
+    @requestBody() credenciales: Credenciales
+  ) {
+    let a = await this.servicioAutenticacion.IdentificarAsesor(credenciales.usuario, credenciales.clave);
+    if (a) {
+      let token = this.servicioAutenticacion.GenerearTokenJWT_a(a);
+      return {
+        datos: {
+          nombre: a.nombre,
+          correo: a.correo,
+          descripcion: a.descripcion,
+          id: a.id
+        },
+        tk: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos invalidos")
+    }
+  }
+
 
   @post('/asesors')
   @response(200, {
