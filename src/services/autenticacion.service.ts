@@ -76,7 +76,9 @@ export class AutenticacionService {
       data: {
         id: administrador.id,
         nombre: administrador.nombre + " " + administrador.apellido,
-        correo: administrador.correo
+        correo: administrador.correo,
+        //pendiente cambiar por atributo role
+        descripcion: administrador.descripcion
       }
     },
       Llaves.claveJWT);
@@ -88,7 +90,9 @@ export class AutenticacionService {
       data: {
         id: asesor.id,
         nombre: asesor.nombre + " " + asesor.apellido,
-        correo: asesor.correo
+        correo: asesor.correo,
+        //pendiente cambiar por atributo role
+        descripcion: asesor.descripcion
       }
     },
       Llaves.claveJWT);
@@ -100,7 +104,9 @@ export class AutenticacionService {
       data: {
         id: cliente.id,
         nombre: cliente.nombre + " " + cliente.apellido,
-        correo: cliente.correo
+        correo: cliente.correo,
+        //pendiente cambiar por atributo role
+        descripcion: cliente.descripcion
       }
     },
       Llaves.claveJWT);
