@@ -22,7 +22,7 @@ export class EstrategiasCliente implements AuthenticationStrategy {
       let datos = this.servicioAutenticacion.ValidarToken(token);
       if (datos) {
         //pendiente cambiar descripcion por atributo role
-        if (datos.data.descripcion == "Cliente") {
+        if (datos.data.role == "Cliente") {
           let perfil: UserProfile = Object.assign({
             nombre: datos.data.nombre
           });

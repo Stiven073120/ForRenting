@@ -74,6 +74,12 @@ export class Asesor extends Entity {
   })
   telefono: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  role: string;
+
   @belongsTo(() => Administrador, {name: 'administrador'})
   id_administrador: string;
 

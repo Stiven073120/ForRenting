@@ -43,7 +43,7 @@ export class AdministradorController {
         datos: {
           nombre: ad.nombre,
           correo: ad.correo,
-          descripcion: ad.descripcion,
+          role: ad.role,
           id: ad.id
         },
         tk: token

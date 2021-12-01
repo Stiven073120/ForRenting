@@ -43,7 +43,7 @@ export class AsesorController {
         datos: {
           nombre: a.nombre,
           correo: a.correo,
-          descripcion: a.descripcion,
+          role: a.role,
           id: a.id
         },
         tk: token

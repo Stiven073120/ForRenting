@@ -74,6 +74,12 @@ export class Administrador extends Entity {
   })
   telefono: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  role: string;
+
   @hasMany(() => Departamento, {keyTo: 'id_administrador'})
   departamentos: Departamento[];
 
