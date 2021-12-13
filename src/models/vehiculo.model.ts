@@ -1,9 +1,9 @@
-import {Entity, model, property, belongsTo, hasOne, hasMany} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, hasOne, model, property} from '@loopback/repository';
 import {Asesor} from './asesor.model';
+import {Sede} from './sede.model';
+import {Solicitud} from './solicitud.model';
 import {TipoVehiculo} from './tipo-vehiculo.model';
 import {VehiculoRentado} from './vehiculo-rentado.model';
-import {Solicitud} from './solicitud.model';
-import {Sede} from './sede.model';
 
 @model()
 export class Vehiculo extends Entity {
@@ -36,18 +36,6 @@ export class Vehiculo extends Entity {
     required: true,
   })
   valor: number;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  id_tipovehiculo: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  id_encargado: string;
 
   @property({
     type: 'string',
