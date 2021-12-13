@@ -42,3 +42,4 @@ export * from './tipo-vehiculo.controller';
 export * from './departamento.controller';
 export * from './municipio.controller';
 export * from './sede.controller';
+export * from './mensaje-contactenos.controller';

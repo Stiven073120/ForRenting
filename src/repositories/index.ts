@@ -9,3 +9,4 @@ export * from './tipo-vehiculo.repository';
 export * from './vehiculo-rentado.repository';
 export * from './vehiculo.repository';
 
+export * from './mensaje-contactenos.repository';
