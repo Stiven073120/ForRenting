@@ -4,27 +4,23 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
+import {Llaves} from '../config/llaves';
 import {MensajeContactenos} from '../models';
 import {MensajeContactenosRepository} from '../repositories';
+const fetch = require('node-fetch');
 
 export class MensajeContactenosController {
   constructor(
     @repository(MensajeContactenosRepository)
-    public mensajeContactenosRepository : MensajeContactenosRepository,
-  ) {}
+    public mensajeContactenosRepository: MensajeContactenosRepository,
+  ) { }
 
   @post('/mensaje-contactenos')
   @response(200, {
@@ -44,7 +40,18 @@ export class MensajeContactenosController {
     })
     mensajeContactenos: Omit<MensajeContactenos, 'id'>,
   ): Promise<MensajeContactenos> {
-    return this.mensajeContactenosRepository.create(mensajeContactenos);
+    let mc = await this.mensajeContactenosRepository.create(mensajeContactenos);
+
+    //Notificar al administrador
+
+    let asunto = mensajeContactenos.asunto;
+    let contenido = `Usuario ${mensajeContactenos.nombre}, telefono: ${mensajeContactenos.telefono} envio un mensaje el cual dice: "${mensajeContactenos.mensaje}"`
+    fetch(`${Llaves.urlServicioNotificaciones}/send-email?correo_destino=stiven073120@hotmail.com&asunto=${asunto}&contenido=${contenido}`)
+
+      .then((data: any) => {
+        console.log(data);
+      })
+    return mc;
   }
 
   @get('/mensaje-contactenos/count')
